@@ -114,7 +114,7 @@ KICH_BAN = [
 
 INTRO = "Chào tất cả các bạn!\nRất vui được ở đây cùng các bạn.\nChúc các bạn có một ngày thật tốt lành.\nCùng bắt đầu nào!"
 hook_vi = "Bạn đã làm quen với ai vào ngày đầu tiên ở ngôi trường mới chưa?"
-hook_us = "Did you make any friends on your first day at the new school?"
+hook_us = "Have you made any friends on your first day at the new school?"
 topic_vi = "Bài 1: Làm quen bạn mới."
 topic_us = "Lesson 1: Making new friends."
 OUT_TRO = "Cám ơn các bạn đã xem hết video, nếu các bạn thấy hay, hãy nhấn nút Đăng ký để ủng hộ kênh và đón xem những video tiếp theo nhé. Cảm ơn các bạn rất nhiều!"
@@ -154,8 +154,10 @@ if not (os.path.exists(f"{BASE_DIR}/image/base_scene.png")
         and  os.path.exists(f"{BASE_DIR}/image/topic.png")
         and os.path.exists(f"{BASE_DIR}/image/female.png")
         and os.path.exists(f"{BASE_DIR}/image/male.png")
-        and os.path.exists(f"{BASE_DIR}/image/hook.png")):
-    downloads = ["base_scene.png", "intro.png", "topic.png", "female.png", "male.png", "hook.png"]
+        and os.path.exists(f"{BASE_DIR}/image/hook.png")
+        and os.path.exists(f"{BASE_DIR}/image/advice.png")
+):
+    downloads = ["base_scene.png", "intro.png", "topic.png", "female.png", "male.png", "hook.png", "advice.png"]
     for f in downloads:
         shutil.copy(f"{DOWNLOAD_DIR}/image/{f}", f"{BASE_DIR}/image/{f}")
         resized = (Image.open(f"{BASE_DIR}/image/{f}")
@@ -221,7 +223,7 @@ async def audio_topic(topic_vi, topic_us, file_out):
     try:
         communicate = edge_tts.Communicate(
             text = topic_vi,
-            voice = VOICE_VN_MALE,
+            voice = VOICE_VN_FEMALE,
             rate="+20%",
             pitch="+0Hz"
         )
@@ -250,12 +252,10 @@ async def audio_topic(topic_vi, topic_us, file_out):
 
     clip_us = AudioSegment.from_file(file_us, format="mp3")
 
-    silence = AudioSegment.silent(duration=2000)  # 2000 ms = 2 giây
-    silence1 = AudioSegment.silent(duration=1000)  # 2000 ms = 2 giây
-
+    silence = AudioSegment.silent(duration=200)  # 2000 ms = 2 giây
 
     # Ghép audio: lần 1 + lần 2
-    final_audio = silence1 + clip_vi + silence+ clip_us + silence
+    final_audio = silence + clip_vi + silence+ clip_us + silence
     temp_files = [
         file_vi,
         file_us,
@@ -272,7 +272,7 @@ async def audio_topic(topic_vi, topic_us, file_out):
     return file_out
 
 # Hàm vẽ topic lên ảnh topic:
-def draw_text_on_topic(file_img, topic_us):
+def draw_text_on_topic_ad(file_img, topic_us):
     # Vẽ topic lên ảnh:
     img = Image.open(file_img)
     ve_text_wrap(img, topic_us, FONT)
@@ -304,10 +304,9 @@ async def audio_listen_advice(text_vi, text_us, file_out):
         rate="+0%", pitch="+0Hz").save(us_file)
     clip_us = AudioSegment.from_file(us_file, format="mp3")
 
-    silence = AudioSegment.silent(duration= 1000)  # 2000 ms = 2 giây
-    silence1 = AudioSegment.silent(duration= 500)  # 2000 ms = 2 giây
+    silence = AudioSegment.silent(duration= 500)  # 2000 ms = 2 giây
 
-    final_audio = silence1 +  clip_vi + silence + clip_us + silence
+    final_audio = silence +  clip_vi + silence + clip_us + silence
 
     temp_files = [
         vi_file,
@@ -355,7 +354,7 @@ async def audio_repeat(phan):
     await edge_tts.Communicate(
         text=phan["thoai"],
         voice=VOICE_FEMALE if phan["sex"] == "female" else VOICE_MALE,
-        rate="+10%", pitch="+0Hz").save(fast_file)
+        rate="-10%", pitch="+0Hz").save(fast_file)
     clip1 = AudioSegment.from_file(fast_file, format="mp3")
 
     # Lần 2:
@@ -363,7 +362,7 @@ async def audio_repeat(phan):
     await edge_tts.Communicate(
         text=phan["thoai"],
         voice=VOICE_FEMALE if phan["sex"] == "female" else VOICE_MALE,
-        rate="-15%", pitch="+0Hz").save(slow_file)
+        rate="-20%", pitch="+0Hz").save(slow_file)
     clip2 = AudioSegment.from_file(slow_file, format="mp3")
 
     # Lần 3: đọc nhanh lại
@@ -371,16 +370,15 @@ async def audio_repeat(phan):
     await edge_tts.Communicate(
         text=phan["thoai"],
         voice=VOICE_FEMALE if phan["sex"] == "female" else VOICE_MALE,
-        rate="+10%", pitch="+0Hz").save(fast2_file)
+        rate="-10%", pitch="+0Hz").save(fast2_file)
     clip3 = AudioSegment.from_file(fast2_file, format="mp3")
 
 
     # Tạo đoạn silence 2 giây
-    silence = AudioSegment.silent(duration= 1000)  # 2000 ms = 2 giây
-    silence1 = AudioSegment.silent(duration= 1500)  # 2000 ms = 2 giây
+    silence = AudioSegment.silent(duration= 1500)  # 2000 ms = 2 giây
 
     # Ghép audio: lần 1 + lần 2 + silence + lần 3
-    final_audio = silence + clip1 +silence + clip2 + silence + clip3 + silence1
+    final_audio = silence + clip1 + silence + clip2 + silence + clip3 + silence
     temp_files = [
         # vi_file,
         fast_file,
@@ -430,7 +428,7 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
     font_vi = ImageFont.truetype("arial.ttf", 26)  # Fon
     bbox_vi = draw.multiline_textbbox((0, 0), wrapped_vi, font=font_vi)
     text_vi_w = bbox_vi[2] - bbox_vi[0]
-    text_vi_h = bbox[3] - bbox[1]
+    text_vi_h = bbox_vi[3] - bbox_vi[1]
 
     # ==========================
     # Kích thước bong bóng
@@ -474,31 +472,9 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
         x  = (a + img.width + w - bubble_width)/2
     elif scene["sex"] == "male":
         (a, b, w, h) = faces[1]
-        # x = (img.width - a)/2 +50
-        x = (a - bubble_width)/2 - 2 *  w
+        x = (a - bubble_width)/2 + 2 *  w
     else:
         x, y = 400, 40
-
-        # tail1 = (
-        #     x + 90,
-        #     y + bubble_height - 10,
-        #     x + 120,
-        #     y + bubble_height + 20
-        # )
-        #
-        # tail2 = (
-        #     x + 110,
-        #     y + bubble_height + 10,
-        #     x + 130,
-        #     y + bubble_height + 30
-        # )
-        #
-        # tail3 = (
-        #     x + 125,
-        #     y + bubble_height + 30,
-        #     x + 140,
-        #     y + bubble_height + 45
-        # )
 
     # Bong bóng chính
     # ==========================
@@ -516,40 +492,8 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
         width=1
     )
 
-    # ==========================
-    # Đuôi thoại cong
-    # ==========================
-
-    # draw.ellipse(
-    #     tail1,
-    #     fill="white",
-    #     outline="black"
-    # )
-    #
-    # draw.ellipse(
-    #     tail2,
-    #     fill="white",
-    #     outline="black"
-    # )
-    #
-    # draw.ellipse(
-    #     tail3,
-    #     fill="white",
-    #     outline="black"
-    # )
-
-    # ==========================
-    # Text
-    # ==========================
-
     text_x = x + (bubble_width - text_w) / 2
-    # text_y = y + (bubble_height - text_h) / 2
-    text_y = y + (bubble_height - text_h - text_vi_h) / 2 - 10
-
-
-
-
-    # Vẽ tiếng Việt (bên dưới, thêm font nhỏ hơn nếu cần)
+    text_y = y + (bubble_height - text_h - text_vi_h) / 2 - 5
 
     # 2. Tính vị trí tiếng Việt dựa trên khối tiếng Anh
     # Chiều cao của khối tiếng Anh
@@ -585,7 +529,7 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
 
     return img
 
-def draw_text_preview(base_image_path, output_path,text_vi, text_us):
+def draw_text_preview_hook(base_image_path, output_path,text_vi, text_us):
 
     img = Image.open(base_image_path).convert("RGBA")
     draw = ImageDraw.Draw(img)
@@ -613,72 +557,81 @@ def draw_text_preview(base_image_path, output_path,text_vi, text_us):
     text_w = bbox[2] - bbox[0]
     text_h = bbox[3] - bbox[1]
 
+    wrapped_vi = textwrap.fill(text_vi, width=55)  # Tiếng Việt có thể để width rộng hơn chút
+    font_vi = ImageFont.truetype("arial.ttf", 26)  # Fon
+    bbox_vi = draw.multiline_textbbox((0, 0), wrapped_vi, font=font_vi)
+    text_vi_w = bbox_vi[2] - bbox_vi[0]
+    text_vi_h = bbox_vi[3] - bbox_vi[1]
+
     # ==========================
     # Kích thước bong bóng
     # ==========================
 
     bubble_width = max(
         260,
-        text_w + 80
+        text_vi_w + 60, text_w +60
     )
 
     bubble_height = max(
         120,
-        text_h + 140
+        text_h + text_vi_h + 60
     )
 
     # ==========================
-    # Vị trí bong bóng
+    # Bong bóng chính
     # ==========================
+    x = (img.width - bubble_width)/2
+    y = img.height - bubble_height - 30
 
-    # Vị trí vẽ bong bóng (ví dụ: gần đáy ảnh)
-    x = (img.width - text_w) // 2
-    y = img.height - text_h - 140
+    draw.rounded_rectangle(
+        (
+            x,
+            y,
+            x + bubble_width,
+            y + bubble_height
+        ),
+        radius=20,
+        fill="white" ,
+        outline="blue",
+        width=1
+    )
 
     text_x = x + (bubble_width - text_w) / 2
-    text_y = y + (bubble_height - text_h) / 2 -20
+    text_y = y + (bubble_height - text_h - text_vi_h) / 2 - 5
+
+    # 2. Tính vị trí tiếng Việt dựa trên khối tiếng Anh
+    # Chiều cao của khối tiếng Anh
+    text_en_h = bbox[3] - bbox[1]
+
+    # Tọa độ Y cho tiếng Việt = Y khối trên + chiều cao khối trên + khoảng cách
+    vi_y = text_y + text_en_h + 20
+
+    # Tọa độ X cho tiếng Việt:
+    # Vì tiếng Việt có độ rộng khác, ta cần tính lại X để nó căn giữa bong bóng
+
+    vi_x = x + (bubble_width - text_vi_w) / 2
 
     draw.multiline_text(
         (
             text_x,
             text_y
+
         ),
         wrapped_text,
         font=font,
         fill="black",
         align="center"
     )
-    import time
-    time.sleep(0.03)
-
-    # Vẽ tiếng Việt (bên dưới, thêm font nhỏ hơn nếu cần)
-    wrapped_vi = textwrap.fill(text_vi, width=50)  # Tiếng Việt có thể để width rộng hơn chút
-
-    font_vi = ImageFont.truetype("arial.ttf", 24)  # Font nhỏ hơn cho tiếng Việt
-
-    # 2. Tính vị trí tiếng Việt dựa trên khối tiếng Anh
-    # Chiều cao của khối tiếng Anh
-    text_en_h = bbox[3] - bbox[1]
-
-
-    # Tọa độ Y cho tiếng Việt = Y khối trên + chiều cao khối trên + khoảng cách
-    vi_y = text_y + text_en_h + 15
-
-    # Tọa độ X cho tiếng Việt:
-    # Vì tiếng Việt có độ rộng khác, ta cần tính lại X để nó căn giữa bong bóng
-    bbox_vi = draw.multiline_textbbox((0, 0), wrapped_vi, font=font_vi)
-    vi_w = bbox_vi[2] - bbox_vi[0]
-    vi_x = x + (bubble_width - vi_w) / 2
 
     # 3. Vẽ tiếng Việt
-    draw.multiline_text((vi_x, vi_y), wrapped_vi, font=font_vi,  fill=(0, 70, 220), align="center")
+    draw.multiline_text(
+        (vi_x, vi_y), wrapped_vi, font=font_vi, fill=(0, 70, 220), align="center")
 
     img.save(output_path)
 
     print(f"Saved {output_path}")
 
     return img
-
 
 async def all_preview_audio_imge():
     for i, scene in enumerate(KICH_BAN, start=1):
@@ -688,7 +641,7 @@ async def all_preview_audio_imge():
         output_image = f"{BASE_DIR}/image/preview/scene_{i}.png"
 
         if not os.path.exists(output_image):
-            img = draw_text_preview(base_image_path=f"{BASE_DIR}/image/base_scene.png",
+            img = draw_text_preview_hook(base_image_path=f"{BASE_DIR}/image/base_scene.png",
                 output_path=output_image,
                 text_vi=scene["translation"],
                 text_us = scene["thoai"],
@@ -715,7 +668,6 @@ async def all_repeat_image_and_audio():
 
             img.save(output_image, quality=90)
 
-
 def run_ffmpeg(cmd):
     print(" ".join(cmd))
     subprocess.run(cmd, check=True)
@@ -739,7 +691,6 @@ def make_scene_video(image_path, audio_path, output_path):
         "-shortest", "-c:v", "libx264", "-r", "24", "-c:a", "aac",
         "-pix_fmt", "yuv420p", output_path
     ])
-
 
 def concat_videos(video_list, output):
     if os.path.exists(output):
@@ -818,8 +769,7 @@ async def build_final_video():
     intro_img = f"{BASE_DIR}/image/intro.png"
     topic_img = f"{BASE_DIR}/image/topic.png"
     hook_img = f"{BASE_DIR}/image/hook.png"
-    preview_img = f"{BASE_DIR}/image/base_scene.png"
-    ad_img = f"{BASE_DIR}/image/female.png"
+    ad_img = f"{BASE_DIR}/image/advice.png"
     outtro_img = "for_youtube/logo_outtro/outtro.png"
 
     intro_audio = f"{BASE_DIR}/audio/intro.mp3"
@@ -909,7 +859,30 @@ async def main():
     await audio_listen_advice(ad_vi2, ad_us2, f"{BASE_DIR}/audio/ad_audio2.mp3")
 
     print("----TOPIC----")
-    draw_text_on_topic(f"{BASE_DIR}/image/topic.png", topic_us)
+    draw_text_on_topic_ad(f"{BASE_DIR}/image/topic.png", topic_us)
+
+    print("----AdVICE----")
+
+    if (os.path.exists(f"{BASE_DIR}/image/advice.png") ):
+        if not os.path.exists(f"{BASE_DIR}/image/advice1.png"):
+            shutil.copy(f"{BASE_DIR}/image/advice.png", f"{BASE_DIR}/image/advice1.png")
+
+        if not os.path.exists(f"{BASE_DIR}/image/advice2.png"):
+            shutil.copy(f"{BASE_DIR}/image/advice.png", f"{BASE_DIR}/image/advice2.png")
+
+    draw_text_on_topic_ad(f"{BASE_DIR}/image/advice1.png", ad_us1)
+
+    draw_text_on_topic_ad(f"{BASE_DIR}/image/advice2.png", ad_us2)
+
+    # output_image = f"{BASE_DIR}/image/advice.png"
+    #
+    # if not os.path.exists(output_image):
+    #     img = draw_text_preview_hook(base_image_path=f"{BASE_DIR}/image/base_scene.png",
+    #                                  output_path=output_image,
+    #                                  text_vi=hook_vi,
+    #                                  text_us=hook_us,
+    #                                  )
+    #     img.save(output_image, quality=90)
 
     # Tạo ảnh:
     print("----CREATE ALL IMAGE AND AUDIO----")
