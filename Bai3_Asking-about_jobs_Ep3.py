@@ -1,4 +1,3 @@
-
 import os
 import shutil
 import subprocess
@@ -35,6 +34,8 @@ if not os.path.exists("for_youtube/logo_outtro/wartermark.png"):
     # Lưu ảnh PNG nền trong suốt
     img.save("for_youtube/logo_outtro/wartermark.png")
 
+    print("WATREMARK: Done!")
+
 # Chuyển logo thành nền trong suốt và resize 800x800 và đổi tên thành logo
 
 if not os.path.exists("for_youtube/logo_outtro/logo.png"):
@@ -43,7 +44,6 @@ if not os.path.exists("for_youtube/logo_outtro/logo.png"):
            .open("for_youtube/logo_outtro/ChatGPT Image 07_37_09 9 thg 6, 2026.png")
            .convert("RGBA")
            .resize((800, 800)))
-
 
     new_data = []
 
@@ -59,25 +59,34 @@ if not os.path.exists("for_youtube/logo_outtro/logo.png"):
     # Lưu ảnh PNG nền trong suốt
     img.save("for_youtube/logo_outtro/logo.png")
 
+    print("LOGO: Done!")
+
+# Resize outtro về kích thước 1280x720
+if not os.path.exists("for_youtube/logo_outtro/outtro.png"):
+    outtro = (Image
+              .open("for_youtube/logo_outtro/ChatGPT Image 07_41_09 9 thg 6, 2026.png")
+              .resize((1280, 720))
+              .save("for_youtube/logo_outtro/outtro.png"))
+print("OUTTRO: Done!")
+
 # =========================
 # 1. Kịch bản hội thoại
 # =========================
 dialogues = [
-    ("Emma", "Hi Lucas! What do you like to do in your free time?", "Chào Lucas! Bạn thích làm gì vào thời gian rảnh?", "female"),
-    ("Lucas", "Hi Emma! I like listening to music and playing soccer.", "Chào Emma! Mình thích nghe nhạc và chơi bóng đá.", "male"),
-    ("Emma", "That sounds fun! What kind of music do you like?", "Nghe thú vị đấy! Bạn thích thể loại nhạc nào?", "female"),
-    ("Lucas", "I like pop music. It makes me feel happy.", "Mình thích nhạc pop. Nó làm mình cảm thấy vui vẻ.", "male"),
-    ("Emma", "Me too! I often listen to music after school.", "Mình cũng vậy! Mình thường nghe nhạc sau giờ học.", "female"),
-    ("Lucas", "Who is your favorite singer?", "Ca sĩ yêu thích của bạn là ai?", "male"),
-    ("Emma", "I like Taylor Swift. Her songs are beautiful.", "Mình thích Taylor Swift. Những bài hát của cô ấy rất hay.", "female"),
-    ("Lucas", "I know her! She has many great songs.", "Mình biết cô ấy! Cô ấy có rất nhiều bài hát tuyệt vời.", "male"),
-    ("Emma", "Do you play soccer every week?", "Bạn có chơi bóng đá mỗi tuần không?", "female"),
-    ("Lucas", "Yes, I play with my friends every Saturday.", "Có, mình chơi cùng bạn bè vào mỗi thứ Bảy.", "male"),
-    ("Emma", "That's great! Sports are good for health.", "Tuyệt quá! Thể thao rất tốt cho sức khỏe.", "female"),
-    ("Lucas", "I agree. Soccer helps me stay active and strong.", "Mình đồng ý. Bóng đá giúp mình năng động và khỏe mạnh.", "male"),
-    ("Emma", "I like badminton. It's my favorite sport.", "Mình thích cầu lông. Đó là môn thể thao yêu thích của mình.", "female"),
-    ("Lucas", "That's awesome! Maybe we can play sports together someday.", "Tuyệt đấy! Có lẽ một ngày nào đó chúng ta có thể chơi thể thao cùng nhau.", "male"),
-    ("Emma", "I'd love that! See you later, Lucas.", "Mình rất thích điều đó! Hẹn gặp lại nhé, Lucas.", "female")
+    ("Susan", "Hi Paul, how are you today?", "Chào Paul, hôm nay bạn khỏe không?", "female"),
+    ("Paul", "I’m good, thanks. How about you?", "Mình khỏe, cảm ơn. Còn bạn thì sao?", "male"),
+    ("Susan", "I’m fine too. By the way, can I ask you something?", "Mình cũng khỏe. Nhân tiện, mình có thể hỏi bạn một điều không?", "female"),
+    ("Paul", "Sure, go ahead.", "Được chứ, bạn cứ hỏi.", "male"),
+    ("Susan", "What does your dad do?", "Ba bạn làm nghề gì vậy?", "female"),
+    ("Paul", "My dad is a mechanic. He fixes cars in a garage.", "Ba mình là thợ sửa xe. Ông sửa ô tô ở một gara.", "male"),
+    ("Susan", "That’s cool. He must be very good with machines.", "Hay quá. Chắc ba bạn rất giỏi về máy móc.", "female"),
+    ("Paul", "Yes, he really enjoys his work. How about your mom?", "Đúng vậy, ông rất thích công việc của mình. Còn mẹ bạn thì sao?", "male"),
+    ("Susan", "My mom is a teacher. She teaches math at a middle school.", "Mẹ mình là giáo viên. Bà dạy toán ở một trường trung học cơ sở.", "female"),
+    ("Paul", "Wow, teaching math sounds difficult but important.", "Ồ, dạy toán nghe khó nhưng rất quan trọng.", "male"),
+    ("Susan", "Yes, sometimes it’s hard, but she loves helping students learn.", "Đúng vậy, đôi khi khá khó, nhưng mẹ mình rất thích giúp học sinh học tập.", "female"),
+    ("Paul", "That’s great. And what about your dad?", "Tuyệt quá. Thế còn ba bạn thì sao?", "male"),
+    ("Susan", "My dad is a farmer. He grows rice and vegetables.", "Ba mình là nông dân. Ông trồng lúa và rau.", "female"),
+    ("Paul", "Nice! So both of our parents work hard in different ways.", "Hay thật! Vậy là ba mẹ chúng ta đều làm việc chăm chỉ theo những cách khác nhau.", "male")
 ]
 
 KICH_BAN = [
@@ -93,13 +102,13 @@ KICH_BAN = [
 ]
 
 INTRO = "Chào mừng các bạn đã quay trở lại!\nRất vui được ở đây cùng các bạn.\nChúc các bạn có một ngày thật tốt lành.\nCùng bắt đầu nào!"
-hook_vi = "Sở thích của bạn là gì? Cùng học cách nói về sở thích trong tiếng anh nhé."
-hook_us = "What are your hobbies? Let's to learn how to talk about hobbies in English."
-topic_vi = "Bài 3: Nói về sở thích cá nhân."
-topic_us = "Lesson 3: Talking about hobbies."
+hook_vi = "Ba mẹ bạn làm nghề gì? bạn đã từng hỏi bạn bè câu hỏi này bằng tiếng anh chưa?"
+hook_us = "What jobs do your parents do? Have you ever asked your friends this question in English?"
+topic_vi = "Bài 3: Hỏi về nghề nghiệp"
+topic_us = "Lesson 3: Asking about jobs"
 OUT_TRO = "Cám ơn các bạn đã xem hết video, nếu các bạn thấy hay, hãy nhấn nút Đăng ký để ủng hộ kênh và đón xem những video tiếp theo nhé. Cảm ơn các bạn rất nhiều!"
 
-# Giọng đọc
+# VOICE_MALE = "en-GB-RyanNeural"
 VOICE_MALE = "en-US-ChristopherNeural"
 VOICE_FEMALE = "en-US-JennyNeural"
 
@@ -126,7 +135,7 @@ os.makedirs(f"{BASE_DIR}/videos", exist_ok=True)
 # 3. Các hàm xử lý
 # =========================
 
-# Copy các ảnh base_scene/intro/topic từ download/image vào ouput/image
+# Copy các ảnh base_scene/intro.txt/topic từ download/image vào ouput/image
 
 if not (os.path.exists(f"{BASE_DIR}/image/base_scene.png")
         and os.path.exists(f"{BASE_DIR}/image/intro.png")
@@ -134,7 +143,8 @@ if not (os.path.exists(f"{BASE_DIR}/image/base_scene.png")
         and os.path.exists(f"{BASE_DIR}/image/female.png")
         and os.path.exists(f"{BASE_DIR}/image/male.png")
         and os.path.exists(f"{BASE_DIR}/image/hook.png")
-        and os.path.exists(f"{BASE_DIR}/image/advice.png")):
+        and os.path.exists(f"{BASE_DIR}/image/advice.png")
+):
     downloads = ["base_scene.png", "intro.png", "topic.png", "female.png", "male.png", "hook.png", "advice.png"]
     for f in downloads:
         shutil.copy(f"{DOWNLOAD_DIR}/image/{f}", f"{BASE_DIR}/image/{f}")
@@ -155,10 +165,10 @@ async def audio_intro_outtro_hook(text, file_out):
         )
         await communicate.save(file_out)
         # Thêm 2 giây im lặng
-        # audio = AudioSegment.from_mp3(file_out)
-        # silence = AudioSegment.silent(duration=500)  # 2000 ms = 2 giây
-        # audio = audio + silence
-        # audio.export(file_out, format="mp3")
+        audio = AudioSegment.from_mp3(file_out)
+        silence = AudioSegment.silent(duration=300)  # 2000 ms = 2 giây
+        audio = audio + silence
+        audio.export(file_out, format="mp3")
 
         return file_out
     except Exception as e:
@@ -201,7 +211,7 @@ async def audio_topic(topic_vi, topic_us, file_out):
     try:
         communicate = edge_tts.Communicate(
             text = topic_vi,
-            voice = VOICE_VN_MALE,
+            voice = VOICE_VN_FEMALE,
             rate="+20%",
             pitch="+0Hz"
         )
@@ -232,9 +242,8 @@ async def audio_topic(topic_vi, topic_us, file_out):
 
     silence = AudioSegment.silent(duration=200)  # 2000 ms = 2 giây
 
-
     # Ghép audio: lần 1 + lần 2
-    final_audio = silence + clip_vi + silence+ clip_us
+    final_audio = silence + clip_vi + silence+ clip_us + silence
     temp_files = [
         file_vi,
         file_us,
@@ -251,7 +260,7 @@ async def audio_topic(topic_vi, topic_us, file_out):
     return file_out
 
 # Hàm vẽ topic lên ảnh topic:
-def draw_text_on_topic(file_img, topic_us):
+def draw_text_on_topic_ad(file_img, topic_us):
     # Vẽ topic lên ảnh:
     img = Image.open(file_img)
     ve_text_wrap(img, topic_us, FONT)
@@ -320,6 +329,7 @@ async def audio_preview(scene):
         print(f"Lỗi tạo Intro: {e}")
         return None
 
+# Cần sửa phần phan["nhan_vat"] ==
 async def audio_repeat(phan):
 
     # Tạo audio tiếng Việt
@@ -332,7 +342,7 @@ async def audio_repeat(phan):
     await edge_tts.Communicate(
         text=phan["thoai"],
         voice=VOICE_FEMALE if phan["sex"] == "female" else VOICE_MALE,
-        rate="+10%", pitch="+0Hz").save(fast_file)
+        rate="-10%", pitch="+0Hz").save(fast_file)
     clip1 = AudioSegment.from_file(fast_file, format="mp3")
 
     # Lần 2:
@@ -340,7 +350,7 @@ async def audio_repeat(phan):
     await edge_tts.Communicate(
         text=phan["thoai"],
         voice=VOICE_FEMALE if phan["sex"] == "female" else VOICE_MALE,
-        rate="-15%", pitch="+0Hz").save(slow_file)
+        rate="-20%", pitch="+0Hz").save(slow_file)
     clip2 = AudioSegment.from_file(slow_file, format="mp3")
 
     # Lần 3: đọc nhanh lại
@@ -348,16 +358,15 @@ async def audio_repeat(phan):
     await edge_tts.Communicate(
         text=phan["thoai"],
         voice=VOICE_FEMALE if phan["sex"] == "female" else VOICE_MALE,
-        rate="+10%", pitch="+0Hz").save(fast2_file)
+        rate="-10%", pitch="+0Hz").save(fast2_file)
     clip3 = AudioSegment.from_file(fast2_file, format="mp3")
 
 
     # Tạo đoạn silence 2 giây
-    silence = AudioSegment.silent(duration= 1000)  # 2000 ms = 2 giây
-    # silence1 = AudioSegment.silent(duration= 1000)  # 2000 ms = 2 giây
+    silence = AudioSegment.silent(duration= 1500)  # 2000 ms = 2 giây
 
     # Ghép audio: lần 1 + lần 2 + silence + lần 3
-    final_audio = silence + clip1 + silence + clip2 + silence + clip3
+    final_audio = silence + clip1 + silence + clip2 + silence + clip3 + silence
     temp_files = [
         # vi_file,
         fast_file,
@@ -407,7 +416,7 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
     font_vi = ImageFont.truetype("arial.ttf", 26)  # Fon
     bbox_vi = draw.multiline_textbbox((0, 0), wrapped_vi, font=font_vi)
     text_vi_w = bbox_vi[2] - bbox_vi[0]
-    text_vi_h = bbox[3] - bbox[1]
+    text_vi_h = bbox_vi[3] - bbox_vi[1]
 
     # ==========================
     # Kích thước bong bóng
@@ -420,51 +429,38 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
 
     bubble_height = max(
         120,
-        text_h + text_vi_h +60
+        text_h + text_vi_h + 60
     )
 
     # ==========================
     # Vị trí bong bóng
     # ==========================
 
-    y = img.height - text_h - 550
-
     # Tìm tọa độ nhân vật:
 
     img_cv = cv2.imread(f"{BASE_DIR}/image/base_scene.png")
     gray = cv2.cvtColor(img_cv, cv2.COLOR_BGR2GRAY)
-    gray = cv2.equalizeHist(gray)
-
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
-    faces = face_cascade.detectMultiScale(
-        gray,
-        scaleFactor=1.1,  # giảm xuống để bắt khuôn mặt nhỏ hơn
-        minNeighbors=3,  # tăng lên để giảm false positives
-    )
+    faces = face_cascade.detectMultiScale(gray, 1.1, 3)
 
     for i, (a, b, w, h) in enumerate(faces):
         print(
             i,
             "head=",
             a + w // 2,
-            b + h // 3 # Điểm gần trán
+            b + h // 3
         )
     # ======
     faces = sorted(faces, key=lambda f: f[1])  # sort theo y
+
+    y = img.height - text_h - 550
+
     if scene["sex"] == "female":
-
-        # x += 250
-        (a, b, w, h) =  faces[0]
-        x  = (a + img.width - w - bubble_width)/2
-        print(f"head_x của bạn nữ: {x}")
-
+        (a, b, w, h) = faces[0]
+        x  = (a + img.width + w - bubble_width)/2
     elif scene["sex"] == "male":
-        # Đẩy bong bóng sang phải hơn
         (a, b, w, h) = faces[1]
-        print(a, w)
-        x = (a - bubble_width)/2 - 2*w
-
-        print(f"x của bạn nam: {x}")
+        x = (a - bubble_width)/2 + 1.2 *  w
     else:
         x, y = 400, 40
 
@@ -485,8 +481,7 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
     )
 
     text_x = x + (bubble_width - text_w) / 2
-    # text_y = y + (bubble_height - text_h) / 2
-    text_y = y + (bubble_height - text_h - text_vi_h) / 2 - 10
+    text_y = y + (bubble_height - text_h - text_vi_h) / 2 - 5
 
     # 2. Tính vị trí tiếng Việt dựa trên khối tiếng Anh
     # Chiều cao của khối tiếng Anh
@@ -522,8 +517,7 @@ def add_speech_bubble(base_image_path, output_path,text_vi, text_us, scene):
 
     return img
 
-
-def draw_text_preview(base_image_path, output_path,text_vi, text_us):
+def draw_text_preview_hook(base_image_path, output_path,text_vi, text_us):
 
     img = Image.open(base_image_path).convert("RGBA")
     draw = ImageDraw.Draw(img)
@@ -551,72 +545,81 @@ def draw_text_preview(base_image_path, output_path,text_vi, text_us):
     text_w = bbox[2] - bbox[0]
     text_h = bbox[3] - bbox[1]
 
+    wrapped_vi = textwrap.fill(text_vi, width=55)  # Tiếng Việt có thể để width rộng hơn chút
+    font_vi = ImageFont.truetype("arial.ttf", 26)  # Fon
+    bbox_vi = draw.multiline_textbbox((0, 0), wrapped_vi, font=font_vi)
+    text_vi_w = bbox_vi[2] - bbox_vi[0]
+    text_vi_h = bbox_vi[3] - bbox_vi[1]
+
     # ==========================
     # Kích thước bong bóng
     # ==========================
 
     bubble_width = max(
         260,
-        text_w + 80
+        text_vi_w + 60, text_w +60
     )
 
     bubble_height = max(
         120,
-        text_h + 140
+        text_h + text_vi_h + 60
     )
 
     # ==========================
-    # Vị trí bong bóng
+    # Bong bóng chính
     # ==========================
+    x = (img.width - bubble_width)/2
+    y = img.height - bubble_height - 30
 
-    # Vị trí vẽ bong bóng (ví dụ: gần đáy ảnh)
-    x = (img.width - text_w) // 2
-    y = img.height - text_h - 140
+    draw.rounded_rectangle(
+        (
+            x,
+            y,
+            x + bubble_width,
+            y + bubble_height
+        ),
+        radius=20,
+        fill="white" ,
+        outline="blue",
+        width=1
+    )
 
     text_x = x + (bubble_width - text_w) / 2
-    text_y = y + (bubble_height - text_h) / 2 -20
-
-    draw.multiline_text(
-        (
-            text_x,
-            text_y
-        ),
-        wrapped_text,
-        font=font,
-        fill="white",
-        align="center"
-    )
-    import time
-    time.sleep(0.1)
-
-    # Vẽ tiếng Việt (bên dưới, thêm font nhỏ hơn nếu cần)
-    wrapped_vi = textwrap.fill(text_vi, width=50)  # Tiếng Việt có thể để width rộng hơn chút
-
-    font_vi = ImageFont.truetype("arial.ttf", 24)  # Font nhỏ hơn cho tiếng Việt
+    text_y = y + (bubble_height - text_h - text_vi_h) / 2 - 5
 
     # 2. Tính vị trí tiếng Việt dựa trên khối tiếng Anh
     # Chiều cao của khối tiếng Anh
     text_en_h = bbox[3] - bbox[1]
 
-
     # Tọa độ Y cho tiếng Việt = Y khối trên + chiều cao khối trên + khoảng cách
-    vi_y = text_y + text_en_h + 15
+    vi_y = text_y + text_en_h + 20
 
     # Tọa độ X cho tiếng Việt:
     # Vì tiếng Việt có độ rộng khác, ta cần tính lại X để nó căn giữa bong bóng
-    bbox_vi = draw.multiline_textbbox((0, 0), wrapped_vi, font=font_vi)
-    vi_w = bbox_vi[2] - bbox_vi[0]
-    vi_x = x + (bubble_width - vi_w) / 2
+
+    vi_x = x + (bubble_width - text_vi_w) / 2
+
+    draw.multiline_text(
+        (
+            text_x,
+            text_y
+
+        ),
+        wrapped_text,
+        font=font,
+        fill="black",
+        align="center"
+    )
 
     # 3. Vẽ tiếng Việt
-    draw.multiline_text((vi_x, vi_y), wrapped_vi, font=font_vi, fill="white", align="center")
+    draw.multiline_text(
+        (vi_x, vi_y), wrapped_vi, font=font_vi, fill=(0, 70, 220), align="center")
 
     img.save(output_path)
 
     print(f"Saved {output_path}")
 
     return img
-
 
 async def all_preview_audio_imge():
     for i, scene in enumerate(KICH_BAN, start=1):
@@ -626,7 +629,7 @@ async def all_preview_audio_imge():
         output_image = f"{BASE_DIR}/image/preview/scene_{i}.png"
 
         if not os.path.exists(output_image):
-            img = draw_text_preview(base_image_path=f"{BASE_DIR}/image/base_scene.png",
+            img = draw_text_preview_hook(base_image_path=f"{BASE_DIR}/image/base_scene.png",
                 output_path=output_image,
                 text_vi=scene["translation"],
                 text_us = scene["thoai"],
@@ -652,7 +655,6 @@ async def all_repeat_image_and_audio():
             )
 
             img.save(output_image, quality=90)
-
 
 def run_ffmpeg(cmd):
     print(" ".join(cmd))
@@ -692,12 +694,22 @@ def concat_videos(video_list, output):
     temp_output = output.replace(".mp4", "_temp.mp4")
 
     # concat
+    # run_ffmpeg([
+    #     "ffmpeg", "-y",
+    #     "-f", "concat",
+    #     "-safe", "0",
+    #     "-i", list_file,
+    #     "-c", "copy",
+    #     temp_output
+    # ])
     run_ffmpeg([
         "ffmpeg", "-y",
         "-f", "concat",
         "-safe", "0",
         "-i", list_file,
-        "-c", "copy",
+        "-c:v", "libx264",
+        "-c:a", "aac",
+        "-fflags", "+genpts",
         temp_output
     ])
 
@@ -755,7 +767,9 @@ async def build_final_video():
     intro_img = f"{BASE_DIR}/image/intro.png"
     topic_img = f"{BASE_DIR}/image/topic.png"
     hook_img = f"{BASE_DIR}/image/hook.png"
-    ad_img = f"{BASE_DIR}/image/advice.png"
+    ad_img1 = f"{BASE_DIR}/image/advice1.png"
+    ad_img2 = f"{BASE_DIR}/image/advice2.png"
+
     outtro_img = "for_youtube/logo_outtro/outtro.png"
 
     intro_audio = f"{BASE_DIR}/audio/intro.mp3"
@@ -778,7 +792,7 @@ async def build_final_video():
     final_video = f"{BASE_DIR}/videos/final_video.mp4"
     final_with_music = f"{BASE_DIR}/videos/final_with_music.mp4"
 
-    # Tạo intro/topic/outtro
+    # Tạo intro.txt/topic/outtro
     if not (os.path.exists(intro_video)
             and os.path.exists(topic_video)
             and os.path.exists(hook_video)
@@ -787,13 +801,11 @@ async def build_final_video():
             and os.path.exists(outtro_video)):
         make_scene_video(intro_img, intro_audio, intro_video)
         make_scene_video(hook_img, hook_audio, hook_video)
-        make_scene_video(ad_img, ad_audio1, ad_video1)
-        make_scene_video(ad_img, ad_audio2, ad_video2)
+        make_scene_video(ad_img1, ad_audio1, ad_video1)
+        make_scene_video(ad_img2, ad_audio2, ad_video2)
         make_scene_video(topic_img, topic_audio, topic_video)
         make_scene_video(outtro_img, outtro_audio, outtro_video)
 
-    #Tao preview
-    creat_preview()
 
     # Tạo main.mp4
     create_main_video()
@@ -818,7 +830,7 @@ async def build_final_video():
 # 5. Main
 # =========================
 async def main():
-    # Tạo audio intro/topic/outtro/hook
+    # Tạo audio intro.txt/topic/outtro/hook
     print("----AUDIO----")
     #Intro
     await audio_intro_outtro_hook(INTRO, f"{BASE_DIR}/audio/intro.mp3")
@@ -845,7 +857,20 @@ async def main():
     await audio_listen_advice(ad_vi2, ad_us2, f"{BASE_DIR}/audio/ad_audio2.mp3")
 
     print("----TOPIC----")
-    draw_text_on_topic(f"{BASE_DIR}/image/topic.png", topic_us)
+    draw_text_on_topic_ad(f"{BASE_DIR}/image/topic.png", topic_us)
+
+    print("----AdVICE----")
+
+    if (os.path.exists(f"{BASE_DIR}/image/advice.png") ):
+        if not os.path.exists(f"{BASE_DIR}/image/advice1.png"):
+            shutil.copy(f"{BASE_DIR}/image/advice.png", f"{BASE_DIR}/image/advice1.png")
+
+        if not os.path.exists(f"{BASE_DIR}/image/advice2.png"):
+            shutil.copy(f"{BASE_DIR}/image/advice.png", f"{BASE_DIR}/image/advice2.png")
+
+    draw_text_on_topic_ad(f"{BASE_DIR}/image/advice1.png", ad_us1)
+
+    draw_text_on_topic_ad(f"{BASE_DIR}/image/advice2.png", ad_us2)
 
     # Tạo ảnh:
     print("----CREATE ALL IMAGE AND AUDIO----")
@@ -859,10 +884,13 @@ async def main():
 
         make_scene_video(f"{BASE_DIR}/image/repeat/scene_{i}.png", scene["audio_repeat"], f"{BASE_DIR}/scenes/repeat/scene_{i}.mp4")
 
+    print("Preview Video")
+    # Tao preview
+    creat_preview()
+
     print("----FINAL VIDEO----")
     await build_final_video()
     print("DONE")
 
 if __name__ == "__main__":
     asyncio.run(main())
-

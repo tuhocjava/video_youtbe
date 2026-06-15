@@ -1,0 +1,1 @@
+copy từ base_scene, không tạo trên chatgpt

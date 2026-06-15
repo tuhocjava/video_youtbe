@@ -1,0 +1,1 @@
+intro: Bạn tạo ảnh tỉ lệ 16: 9 chỉ có bạn nữ ở giữa ảnh với lời chào: INTRO = "Chào mừng các bạn đã quay trở lại!\nRất vui được ở đây cùng các bạn.\nChúc các bạn có một ngày thật tốt lành.\nCùng bắt đầu nào!"  bằng tiếng anh và trang trí các câu thật dễ thương ạ
